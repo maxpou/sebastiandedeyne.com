@@ -27,6 +27,9 @@
           <time datetime="{{ .Date.Format "2006-01-02" }}">
             {{ .Date.Format "January 2, 2006" }}
           </time>
+          {{ if .Params.series }}
+            | <a href="#series" class="underline">{{ .Params.series }}</a>
+          {{ end }}
           {{ if (in .Params.categories "articles") }}
             {{ $readingtime := div (.Content | countwords) 200 }}
             | {{ cond (lt $readingtime 1) 1 $readingtime }} min read
@@ -58,6 +61,11 @@
       </div>
     {{ end }}
   </section>
+  {{ if .Params.series }}
+    <div id="series" class="pt-8">
+      {{ partial (printf "series/%s.html" (urlize .Params.series)) }}
+    </div>
+  {{ end }}
 </article>
 
 {{ $related := .Site.RegularPages.Related . | first 3 }}
